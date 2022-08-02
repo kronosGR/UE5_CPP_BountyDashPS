@@ -14,9 +14,9 @@ ABountyDashCharacter::ABountyDashCharacter()
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.f);
 
 	// find objects and assign them to the character
-	ConstructorHelpers::FObjectFinder<UAnimBlueprint> myAnimBP(TEXT("/Game/Barrel_Hopper/Character/BH_Character_AnimBP.BH_Character_AnimBP'"));
+	ConstructorHelpers::FObjectFinder<UAnimBlueprint> myAnimBP(TEXT("/Game/Barrel_Hopper/Character/BH_Character_AnimBP.BH_Character_AnimBP"));
 	ConstructorHelpers::FObjectFinder<USkeletalMesh> myMesh(TEXT("/Game/Barrel_Hopper/Character/Mesh/SK_Mannequin.SK_Mannequin"));
-
+	
 	if (myMesh.Succeeded() && myAnimBP.Succeeded())
 	{
 		GetMesh()->SetSkeletalMesh(myMesh.Object);
