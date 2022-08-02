@@ -4,6 +4,7 @@
 #include "BountyDashCharacter.h"
 
 #include "Components/CapsuleComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 // Sets default values
 ABountyDashCharacter::ABountyDashCharacter()
@@ -22,6 +23,32 @@ ABountyDashCharacter::ABountyDashCharacter()
 		GetMesh()->SetSkeletalMesh(myMesh.Object);
 		GetMesh()->SetAnimInstanceClass(myAnimBP.Object->GeneratedClass);
 	}
+
+	GetMesh()->SetRelativeLocation(FVector(0.f,0.f, -GetCapsuleComponent()->GetUnscaledCapsuleHalfHeight()));
+	GetMesh()->SetRelativeRotation(FRotator(0.f,-90.f,0.f));
+
+	GetCharacterMovement()->JumpZVelocity = 1450.f;
+	GetCharacterMovement()->GravityScale= 4.f;
+
+	// create camera boom and attach it
+	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("Camera Boom"));
+	check(CameraBoom); // checks if it resolves to true
+	CameraBoom->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+	CameraBoom->TargetArmLength= 500.f;
+	CameraBoom->AddRelativeLocation(FVector(0.f, 0.f, 160.f));
+
+	// Create the follow camera
+	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
+	check(FollowCamera);
+	FollowCamera->AttachToComponent(CameraBoom, FAttachmentTransformRules::KeepRelativeTransform, USpringArmComponent::SocketName);
+	FollowCamera->AddRelativeRotation(FQuat(FRotator(-10.f, 0.f, 0.f)));
+
+	CharSpeed = 10.f;
+
+	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &ABountyDashCharacter::MyOwnComponentOverlap);
+	GetCapsuleComponent()->OnComponentEndOverlap.AddDynamic(this, &ABountyDashCharacter::MyOwnComponentEndOverlap);
+
+	
 }
 
 // Called when the game starts or when spawned
@@ -39,12 +66,12 @@ void ABountyDashCharacter::MoveLeft()
 {
 }
 
-void ABountyDashCharacter::myOwnComponentOverlap(AActor* OtherActor, UPrimitiveComponent* OtherComp,
+void ABountyDashCharacter::MyOwnComponentOverlap(AActor* OtherActor, UPrimitiveComponent* OtherComp,
                                                  int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 }
 
-void ABountyDashCharacter::myOwnComponentEndOverlap(AActor* OtherActor, UPrimitiveComponent* OtherComp,
+void ABountyDashCharacter::MyOwnComponentEndOverlap(AActor* OtherActor, UPrimitiveComponent* OtherComp,
 	int32 OtherBodyIndex)
 {
 }
