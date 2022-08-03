@@ -73,10 +73,31 @@ void ABountyDashCharacter::BeginPlay()
 
 void ABountyDashCharacter::MoveRight()
 {
+	if ((Controller!=nullptr))
+	{
+		if (CurrentLocation<TargetArray.Num()-1)
+		{
+			++CurrentLocation;
+		}
+		else
+		{
+			
+		}
+	}
 }
 
 void ABountyDashCharacter::MoveLeft()
 {
+	if ((Controller!=nullptr))
+	{
+		if (CurrentLocation>0)
+		{
+			--CurrentLocation;
+		} else
+		{
+			
+		}
+	}
 }
 
 
@@ -94,6 +115,18 @@ void ABountyDashCharacter::MyOwnComponentEndOverlap(UPrimitiveComponent* Overlap
 void ABountyDashCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	if (TargetArray.Num() >0)
+	{
+		FVector targetLoc = TargetArray[CurrentLocation]->GetActorLocation();
+		targetLoc.Z = GetActorLocation().Z;
+		targetLoc.X = GetActorLocation().X;
+
+		if (targetLoc != GetActorLocation())
+		{
+			SetActorLocation(FMath::Lerp(GetActorLocation(), targetLoc, CharSpeed*DeltaTime));
+		}
+	}
 
 }
 
