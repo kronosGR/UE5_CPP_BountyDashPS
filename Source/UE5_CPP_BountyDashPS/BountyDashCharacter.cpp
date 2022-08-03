@@ -3,6 +3,7 @@
 
 #include "BountyDashCharacter.h"
 
+#include "EngineUtils.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
@@ -48,14 +49,26 @@ ABountyDashCharacter::ABountyDashCharacter()
 	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &ABountyDashCharacter::MyOwnComponentOverlap);
 	GetCapsuleComponent()->OnComponentEndOverlap.AddDynamic(this, &ABountyDashCharacter::MyOwnComponentEndOverlap);
 
-	
+	AutoPossessPlayer = EAutoReceiveInput::Player0;
 }
 
 // Called when the game starts or when spawned
 void ABountyDashCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	for (TActorIterator<ATargetPoint> TargetIter(GetWorld()); TargetIter; ++TargetIter)
+	{
+		TargetArray.Add(*TargetIter);
+	}
+
+	auto SortPred = [](const AActor& A, const AActor&B)->bool
+	{
+		return (A.GetActorLocation().Y <B.GetActorLocation().Y);
+	};
+	TargetArray.Sort(SortPred);
+
+	CurrentLocation = ((TargetArray.Num()/2) + (TargetArray.Num()%2) - 1);
 }
 
 void ABountyDashCharacter::MoveRight()
@@ -65,6 +78,7 @@ void ABountyDashCharacter::MoveRight()
 void ABountyDashCharacter::MoveLeft()
 {
 }
+
 
 void ABountyDashCharacter::MyOwnComponentOverlap(UPrimitiveComponent* OverlappedComp,AActor* OtherActor, UPrimitiveComponent* OtherComp,
                                                  int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
@@ -87,6 +101,13 @@ void ABountyDashCharacter::Tick(float DeltaTime)
 void ABountyDashCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+
+	check(PlayerInputComponent);
+	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
+	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
+
+	PlayerInputComponent->BindAction("MoveRight", IE_Pressed, this, &ABountyDashCharacter::MoveRight);
+	PlayerInputComponent->BindAction("MoveLeft", IE_Pressed, this, &ABountyDashCharacter::MoveLeft);
 
 }
 

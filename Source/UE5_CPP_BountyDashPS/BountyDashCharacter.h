@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Camera/CameraComponent.h"
+#include "Engine/TargetPoint.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "BountyDashCharacter.generated.h"
@@ -18,7 +19,7 @@ public:
 	ABountyDashCharacter();
 	
 	UPROPERTY(EditAnywhere, Category=Logic)
-	TArray<class ATargetPoint*> TargetArray;
+	TArray<ATargetPoint*> TargetArray;
 
 	UPROPERTY(EditAnywhere, Category=Login)
 	float CharSpeed;
