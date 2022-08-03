@@ -66,12 +66,12 @@ void ABountyDashCharacter::MoveLeft()
 {
 }
 
-void ABountyDashCharacter::MyOwnComponentOverlap(AActor* OtherActor, UPrimitiveComponent* OtherComp,
+void ABountyDashCharacter::MyOwnComponentOverlap(UPrimitiveComponent* OverlappedComp,AActor* OtherActor, UPrimitiveComponent* OtherComp,
                                                  int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 }
 
-void ABountyDashCharacter::MyOwnComponentEndOverlap(AActor* OtherActor, UPrimitiveComponent* OtherComp,
+void ABountyDashCharacter::MyOwnComponentEndOverlap(UPrimitiveComponent* OverlappedComp,AActor* OtherActor, UPrimitiveComponent* OtherComp,
 	int32 OtherBodyIndex)
 {
 }
