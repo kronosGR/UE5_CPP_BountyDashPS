@@ -11,9 +11,9 @@ AFloor::AFloor()
 
 	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 
-	ConstructorHelpers::FObjectFinder<UStaticMesh> myMesh(TEXT("/Game/Barrel_Hopper/Geometry/Floor_Mesh_BountyDash.Floor_Mesh_BountyDash"));
+	ConstructorHelpers::FObjectFinder<UStaticMesh> myMesh(TEXT("/Game/Geometry/Meshes/Floor_Mesh_BountyDash.Floor_Mesh_BountyDash"));
 	ConstructorHelpers::FObjectFinder<UMaterial> myMaterial(TEXT("/Game/StarterContent/Materials/M_Concrete_Tiles.M_Concrete_Tiles"));
-
+	
 	if (myMesh.Succeeded())
 	{
 		NumRepeatingMesh = 3;
@@ -52,6 +52,13 @@ AFloor::AFloor()
 			}
 			FloorMeshes.Add(thisMesh);
 		}
+
+		CollisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("CollisionBox"));
+		check(CollisionBox);
+
+		CollisionBox->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+		CollisionBox->SetBoxExtent(FVector(SpawnPoint, myBounds.BoxExtent.Y, myBounds.BoxExtent.Z));
+		CollisionBox->SetCollisionProfileName(TEXT("BlockAllDynamic"));
 		
 	}
 
@@ -73,9 +80,11 @@ void AFloor::Tick(float DeltaTime)
 
 float AFloor::GetKillPoint()
 {
+	return KillPoint;
 }
 
 float AFloor::GetSpawnPoint()
 {
+	return SpawnPoint;
 }
 
