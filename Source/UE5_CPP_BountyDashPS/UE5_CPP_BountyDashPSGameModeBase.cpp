@@ -17,16 +17,24 @@ AUE5_CPP_BountyDashPSGameModeBase::AUE5_CPP_BountyDashPSGameModeBase()
 
 void AUE5_CPP_BountyDashPSGameModeBase::CharScoreUp(unsigned charScore)
 {
+	if (charScore !=0 && charScore % numCoinsForSpeedIncrease ==0)
+	{
+		gameSpeed+= gameSpeedIncrease;
+		gameLevel++;
+	}
 }
 
 float AUE5_CPP_BountyDashPSGameModeBase::GetInvGameSpeed()
 {
+	return -gameSpeed;
 }
 
 float AUE5_CPP_BountyDashPSGameModeBase::GetGameSpeed()
 {
+	return gameSpeed;
 }
 
 int32 AUE5_CPP_BountyDashPSGameModeBase::GetGameLevel()
 {
+	return gameLevel;
 }
