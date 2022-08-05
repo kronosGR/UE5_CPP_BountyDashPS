@@ -7,19 +7,19 @@
 
 AUE5_CPP_BountyDashPSGameModeBase::AUE5_CPP_BountyDashPSGameModeBase()
 {
-	 DefaultPawnClass = ABountyDashCharacter::StaticClass();
+	DefaultPawnClass = ABountyDashCharacter::StaticClass();
 
 	numCoinsForSpeedIncrease = 5;
-	gameSpeed= 10.f;
+	gameSpeed = 10.f;
 	gameSpeedIncrease = 5.0f;
-	gameLevel =1;
+	gameLevel = 1;
 }
 
-void AUE5_CPP_BountyDashPSGameModeBase::CharScoreUp(unsigned charScore)
+void AUE5_CPP_BountyDashPSGameModeBase::CharScoreUp(unsigned int charScore)
 {
-	if (charScore !=0 && charScore % numCoinsForSpeedIncrease ==0)
+	if (charScore != 0 && charScore % numCoinsForSpeedIncrease == 0)
 	{
-		gameSpeed+= gameSpeedIncrease;
+		gameSpeed += gameSpeedIncrease;
 		gameLevel++;
 	}
 }
