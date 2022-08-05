@@ -28,10 +28,10 @@ public:
 
 protected:
 	UFUNCTION()
-	virtual void MyOnActorOverlap(AActor* otherActor);
+	virtual void MyOnActorOverlap(AActor* actor, AActor* otherActor);
 
 	UFUNCTION()
-	virtual void MyOnActorEndOverlap(AActor* otherActor);
+	virtual void MyOnActorEndOverlap(AActor* actor, AActor* otherActor);
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
