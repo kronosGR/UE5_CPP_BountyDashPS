@@ -37,7 +37,7 @@ public:
 	float SpawnTimer;
 
 	UPROPERTY()
-	USceneComponent* scene;
+	USceneComponent* Scene;
 
 private:
 	float KillPoint;
