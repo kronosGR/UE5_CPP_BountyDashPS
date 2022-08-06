@@ -1,9 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+#include "ObstacleSpawner.h"
 #include "Engine/TargetPoint.h"
 #include "Floor.h"
 #include "Obstacle.h"
-#include "ObstacleSpawner.h"
 
 #include "EngineUtils.h"
 #include "UE5_CPP_BountyDashPS.h"
@@ -54,7 +54,8 @@ void AObstacleSpawner::Tick(float DeltaTime)
 
 	TimeSinceLastSpawn += DeltaTime;
 
-	float trueSpawnTime = SpawnTimer / (float)GetCustomGameMode<AUE5_CPP_BountyDashPSGameModeBase>(GetWorld())->GetGameLevel();
+	float trueSpawnTime = SpawnTimer / (float)GetCustomGameMode<AUE5_CPP_BountyDashPSGameModeBase>(GetWorld())->
+		GetGameLevel();
 
 	if (TimeSinceLastSpawn > trueSpawnTime)
 	{
