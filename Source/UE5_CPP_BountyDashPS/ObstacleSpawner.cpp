@@ -1,12 +1,14 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
+#include "Engine/TargetPoint.h"
+#include "Floor.h"
+#include "Obstacle.h"
 #include "ObstacleSpawner.h"
 
 #include "EngineUtils.h"
-#include "Floor.h"
 #include "UE5_CPP_BountyDashPS.h"
 #include "UE5_CPP_BountyDashPSGameModeBase.h"
+
 
 // Sets default values
 AObstacleSpawner::AObstacleSpawner()
@@ -20,6 +22,7 @@ AObstacleSpawner::AObstacleSpawner()
 
 	SpawnTimer = 1.5f;
 }
+
 
 // Called when the game starts or when spawned
 void AObstacleSpawner::BeginPlay()
@@ -36,23 +39,26 @@ void AObstacleSpawner::BeginPlay()
 		if (FloorIter->GetWorld() == GetWorld())
 		{
 			KillPoint = FloorIter->GetKillPoint();
-			SpawnTimer = FloorIter->GetSpawnPoint();
+			SpawnPoint = FloorIter->GetSpawnPoint();
 		}
-		TimeSinceLastSpawn = SpawnTimer;
 	}
+
+	TimeSinceLastSpawn = SpawnTimer;
 }
+
 
 // Called every frame
 void AObstacleSpawner::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	float trueSpawnTime = SpawnTimer / (float)GetCustomGameMode<AUE5_CPP_BountyDashPSGameModeBase>(GetWorld())->
-		GetGameLevel();
+	TimeSinceLastSpawn += DeltaTime;
+
+	float trueSpawnTime = SpawnTimer / (float)GetCustomGameMode<AUE5_CPP_BountyDashPSGameModeBase>(GetWorld())->GetGameLevel();
 
 	if (TimeSinceLastSpawn > trueSpawnTime)
 	{
-		TimeSinceLastSpawn = 0.f;
+		TimeSinceLastSpawn = 0.0f;
 		SpawnObstacle();
 	}
 }
@@ -63,22 +69,25 @@ void AObstacleSpawner::SpawnObstacle()
 	{
 		short Spawner = FMath::Rand() % SpawnTargets.Num();
 		short Obstical = FMath::Rand() % ObstaclesToSpawn.Num();
-		float CapsuleOffset = 0.f;
+		float CapsuleOffset = 0.0f;
 
 		FActorSpawnParameters SpawnInfo;
 
 		FTransform myTrans = SpawnTargets[Spawner]->GetTransform();
 		myTrans.SetLocation(FVector(SpawnPoint, myTrans.GetLocation().Y, myTrans.GetLocation().Z));
 
-		AObstacle* newObs = GetWorld()->SpawnActor<AObstacle>(ObstaclesToSpawn[Obstical], myTrans,SpawnInfo);
+		AObstacle* newObs = GetWorld()->SpawnActor<AObstacle>(ObstaclesToSpawn[Obstical], myTrans, SpawnInfo);
+
 		if (newObs)
 		{
 			newObs->SetKillPoint(KillPoint);
-			USphereComponent* obsSphere = Cast<USphereComponent>(newObs->GetComponentByClass(USphereComponent::StaticClass()));
+
+			USphereComponent* obsSphere = Cast<USphereComponent>(
+				newObs->GetComponentByClass(USphereComponent::StaticClass()));
 
 			if (obsSphere)
 			{
-				newObs->AddActorLocalOffset(FVector(0.f, 0.f, obsSphere->GetUnscaledSphereRadius()));
+				newObs->AddActorLocalOffset(FVector(0.0f, 0.0f, obsSphere->GetUnscaledSphereRadius()));
 			}
 		}
 	}
