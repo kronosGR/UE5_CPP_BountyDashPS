@@ -23,7 +23,7 @@ AFloor::AFloor()
 
 	if (myMesh.Succeeded())
 	{
-		NumRepeatingMesh = 3;
+		NumRepeatingMesh = 80;
 
 		FBoxSphereBounds myBounds = myMesh.Object->GetBounds();
 		float XBounds = myBounds.BoxExtent.X * 2;
@@ -32,24 +32,27 @@ AFloor::AFloor()
 		KillPoint = ScenePos - (XBounds * 0.5f);
 		SpawnPoint = (ScenePos * -1) + (XBounds * 0.5f);
 
-		for (int i = 0; i < NumRepeatingMesh; i++)
+		for (int i = 0; i < NumRepeatingMesh; ++i)
 		{
+			// Initialize Scene
 			FString SceneName = "Scene" + FString::FromInt(i);
 			FName SceneID = FName(*SceneName);
 			USceneComponent* thisScene = CreateDefaultSubobject<USceneComponent>(SceneID);
 			check(thisScene);
 
 			thisScene->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
-			thisScene->SetRelativeLocation(FVector(ScenePos, 0.f, 0.f));
+			thisScene->SetRelativeLocation(FVector(ScenePos, 0.0f, 0.0f));
 			ScenePos += XBounds;
 
 			FloorMeshScenes.Add(thisScene);
 
+			// Initialize Mesh
 			FString MeshName = "Mesh" + FString::FromInt(i);
 			UStaticMeshComponent* thisMesh = CreateDefaultSubobject<UStaticMeshComponent>(FName(*MeshName));
 			check(thisMesh);
-			thisMesh->AttachToComponent(FloorMeshScenes[i], FAttachmentTransformRules::KeepRelativeTransform);
-			thisMesh->SetRelativeLocation(FVector(0.f, 0.f, 0.f));
+
+			thisMesh->AttachToComponent(FloorMeshScenes[i],FAttachmentTransformRules::KeepRelativeTransform);
+			thisMesh->SetRelativeLocation(FVector(0.0f, 0.0f, 0.0f));
 			thisMesh->SetCollisionProfileName(TEXT("OverlapAllDynamic"));
 
 			if (myMaterial.Succeeded())
@@ -57,16 +60,18 @@ AFloor::AFloor()
 				thisMesh->SetStaticMesh(myMesh.Object);
 				thisMesh->SetMaterial(0, myMaterial.Object);
 			}
-			FloorMeshes.Add(thisMesh);
-		}
 
-		CollisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("CollisionBox"));
+			FloorMeshes.Add(thisMesh);
+		} // <--Closing For(int i = 0; i < numReapeatingMesh; ++i)
+
+		CollisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("CollsionBox"));
 		check(CollisionBox);
 
 		CollisionBox->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 		CollisionBox->SetBoxExtent(FVector(SpawnPoint, myBounds.BoxExtent.Y, myBounds.BoxExtent.Z));
 		CollisionBox->SetCollisionProfileName(TEXT("BlockAllDynamic"));
-	}
+
+	} // <-- 
 }
 
 // Called when the game starts or when spawned
