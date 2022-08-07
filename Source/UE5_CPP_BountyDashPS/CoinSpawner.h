@@ -12,8 +12,8 @@ UCLASS()
 class UE5_CPP_BOUNTYDASHPS_API ACoinSpawner : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	ACoinSpawner();
 
@@ -21,7 +21,7 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
@@ -49,4 +49,18 @@ public:
 	UPROPERTY(EditAnywhere)
 	float MovementTimeInterval;
 
+protected:
+	void SpawnCoin();
+	void SpawnCoinSet();
+	void MoveSpawner();
+
+	int32 NumCoinsToSpawn;
+
+	float KillPoint;
+	float SpawnPoint;
+	int32 TargetLoc;
+
+	FTimerHandle CoinSetTimerHandle;
+	FTimerHandle CoinTimerHandle;
+	FTimerHandle SpawnMoveTimerHandle;
 };

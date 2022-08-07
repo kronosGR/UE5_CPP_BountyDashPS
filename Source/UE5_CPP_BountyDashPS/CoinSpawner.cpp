@@ -25,3 +25,15 @@ void ACoinSpawner::Tick(float DeltaTime)
 
 }
 
+void ACoinSpawner::SpawnCoin()
+{
+}
+
+void ACoinSpawner::SpawnCoinSet()
+{
+}
+
+void ACoinSpawner::MoveSpawner()
+{
+}
+
