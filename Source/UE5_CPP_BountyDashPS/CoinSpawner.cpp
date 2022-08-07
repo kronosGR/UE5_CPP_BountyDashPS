@@ -54,12 +54,41 @@ void ACoinSpawner::Tick(float DeltaTime)
 
 void ACoinSpawner::SpawnCoin()
 {
+	FActorSpawnParameters spawnParams;
+	FTransform coinTransform = SpawnTransforms[TargetLoc]->GetTransform();
+	coinTransform.SetLocation(FVector(SpawnPoint, coinTransform.GetLocation().Y, coinTransform.GetLocation().Z));
+
+	ACoin* spawnedCoin = GetWorld()->SpawnActor<ACoin>(CoinObject, coinTransform, spawnParams);
+
+	if (spawnedCoin)
+	{
+		USphereComponent* coinSphere = Cast<USphereComponent>(
+			spawnedCoin->GetComponentByClass(USphereComponent::StaticClass()));
+
+		if (coinSphere)
+		{
+			float offset = coinSphere->GetUnscaledSphereRadius();
+			spawnedCoin->AddActorLocalOffset(FVector(0.f, 0.f, offset));
+		}
+		NumCoinsToSpawn--;
+	}
+	if (NumCoinsToSpawn <= 0)
+	{
+		FTimerManager& worldTimeManager = GetWorld()->GetTimerManager();
+		worldTimeManager.SetTimer(CoinSetTimerHandle, this, &ACoinSpawner::SpawnCoin, CoinSetTimeInterval, false);
+		worldTimeManager.ClearTimer(CoinTimerHandle);
+	}
 }
 
 void ACoinSpawner::SpawnCoinSet()
 {
+	NumCoinsToSpawn = FMath::RandRange(MinSetCoins, MaxSetCoins);
+	FTimerManager& worldTimeManager = GetWorld()->GetTimerManager();
+	worldTimeManager.ClearTimer(CoinSetTimerHandle);
+	worldTimeManager.SetTimer(CoinTimerHandle, this, &ACoinSpawner::SpawnCoin, CoinTimeInterval, true);
 }
 
 void ACoinSpawner::MoveSpawner()
 {
+	TargetLoc = FMath::Rand() % SpawnTransforms.Num();
 }
