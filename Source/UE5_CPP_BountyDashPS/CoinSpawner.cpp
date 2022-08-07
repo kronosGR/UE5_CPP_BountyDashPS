@@ -83,7 +83,10 @@ void ACoinSpawner::SpawnCoin()
 void ACoinSpawner::SpawnCoinSet()
 {
 	NumCoinsToSpawn = FMath::RandRange(MinSetCoins, MaxSetCoins);
+
 	FTimerManager& worldTimeManager = GetWorld()->GetTimerManager();
+
+	// Swap active timers
 	worldTimeManager.ClearTimer(CoinSetTimerHandle);
 	worldTimeManager.SetTimer(CoinTimerHandle, this, &ACoinSpawner::SpawnCoin, CoinTimeInterval, true);
 }

@@ -4,7 +4,6 @@
 #include "Floor.h"
 
 #include "BountyDashCharacter.h"
-#include "DatasmithDefinitions.h"
 #include "UE5_CPP_BountyDashPS.h"
 #include "UE5_CPP_BountyDashPSGameModeBase.h"
 
@@ -27,7 +26,7 @@ AFloor::AFloor()
 
 		FBoxSphereBounds myBounds = myMesh.Object->GetBounds();
 		float XBounds = myBounds.BoxExtent.X * 2;
-		float ScenePos = ((XBounds * (NumRepeatingMesh - 1)) / 2.0f) * -1;
+		float ScenePos = ((XBounds * 2) / 2.0f) * -1;
 
 		KillPoint = ScenePos - (XBounds * 0.5f);
 		SpawnPoint = (ScenePos * -1) + (XBounds * 0.5f);
