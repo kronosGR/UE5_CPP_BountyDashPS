@@ -4,6 +4,9 @@
 #include "BountyDashCharacter.h"
 
 #include "EngineUtils.h"
+#include "Obstacle.h"
+#include "UE5_CPP_BountyDashPS.h"
+#include "UE5_CPP_BountyDashPSGameModeBase.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
@@ -104,11 +107,23 @@ void ABountyDashCharacter::MoveLeft()
 void ABountyDashCharacter::MyOwnComponentOverlap(UPrimitiveComponent* OverlappedComp,AActor* OtherActor, UPrimitiveComponent* OtherComp,
                                                  int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	if (OtherActor->GetClass()->IsChildOf(AObstacle::StaticClass()))
+	{
+		FVector vecBetween=OtherActor->GetActorLocation()-GetActorLocation();
+		float AngleBetween = FMath::Acos(FVector::DotProduct(vecBetween.GetSafeNormal(), GetActorForwardVector().GetSafeNormal()));
+
+		AngleBetween *= (180/PI);
+		if (AngleBetween<60.f)
+		{
+			bBeingPushed=true;
+		}
+	}
 }
 
 void ABountyDashCharacter::MyOwnComponentEndOverlap(UPrimitiveComponent* OverlappedComp,AActor* OtherActor, UPrimitiveComponent* OtherComp,
 	int32 OtherBodyIndex)
 {
+	bBeingPushed=false;
 }
 
 // Called every frame
@@ -126,6 +141,12 @@ void ABountyDashCharacter::Tick(float DeltaTime)
 		{
 			SetActorLocation(FMath::Lerp(GetActorLocation(), targetLoc, CharSpeed*DeltaTime));
 		}
+	}
+
+	if (bBeingPushed)
+	{
+		float moveSpeed = GetCustomGameMode<AUE5_CPP_BountyDashPSGameModeBase>(GetWorld())->GetInvGameSpeed();
+		AddActorLocalOffset(FVector(moveSpeed, 0.f, 0.f));
 	}
 
 }
