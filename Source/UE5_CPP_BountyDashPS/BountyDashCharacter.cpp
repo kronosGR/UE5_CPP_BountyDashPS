@@ -167,5 +167,7 @@ void ABountyDashCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
 
 void ABountyDashCharacter::ScoreUp()
 {
+	Score++;
+	GetCustomGameMode<AUE5_CPP_BountyDashPSGameModeBase>(GetWorld())->CharScoreUp(Score);
 }
 

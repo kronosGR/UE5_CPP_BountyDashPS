@@ -3,6 +3,8 @@
 
 #include "Coin.h"
 
+#include "BountyDashCharacter.h"
+
 ACoin::ACoin()
 {
 }
@@ -29,5 +31,12 @@ void ACoin::MyOnActorOverlap(AActor* actor, AActor* otherActor)
 			AddActorLocalOffset(FVector(
 				0.f, 0.f, (otherSphere->GetUnscaledSphereRadius() * 2.f) + Collider->GetUnscaledSphereRadius()));
 		}
+	}
+
+	if (otherActor->GetClass()->IsChildOf(ABountyDashCharacter::StaticClass()))
+	{
+		ABountyDashCharacter* myChar  = Cast<ABountyDashCharacter>(otherActor);
+		myChar->ScoreUp();
+		GetWorld()->DestroyActor(this);
 	}
 }
