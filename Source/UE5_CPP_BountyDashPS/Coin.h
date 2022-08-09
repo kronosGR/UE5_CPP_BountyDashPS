@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Obstacle.h"
+#include "BountyDashObject.h"
 #include "Coin.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class UE5_CPP_BOUNTYDASHPS_API ACoin : public AObstacle
+class UE5_CPP_BOUNTYDASHPS_API ACoin : public ABountyDashObject
 {
 	GENERATED_BODY()
 
@@ -19,4 +19,8 @@ class UE5_CPP_BOUNTYDASHPS_API ACoin : public AObstacle
 	virtual void Tick(float DeltaSeconds) override;
 
 	virtual void MyOnActorOverlap(AActor* actor, AActor* otherActor) override;
+
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UStaticMeshComponent* Mesh;
 };

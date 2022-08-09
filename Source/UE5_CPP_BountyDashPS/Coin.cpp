@@ -2,11 +2,16 @@
 
 
 #include "Coin.h"
+#include "Obstacle.h"
 
 #include "BountyDashCharacter.h"
 
 ACoin::ACoin()
 {
+	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
+	check(Mesh);
+	Mesh->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+	Mesh->SetCollisionProfileName("OverlapAllDynamic");
 }
 
 void ACoin::Tick(float DeltaSeconds)
@@ -35,7 +40,7 @@ void ACoin::MyOnActorOverlap(AActor* actor, AActor* otherActor)
 
 	if (otherActor->GetClass()->IsChildOf(ABountyDashCharacter::StaticClass()))
 	{
-		ABountyDashCharacter* myChar  = Cast<ABountyDashCharacter>(otherActor);
+		ABountyDashCharacter* myChar = Cast<ABountyDashCharacter>(otherActor);
 		myChar->ScoreUp();
 		GetWorld()->DestroyActor(this);
 	}
