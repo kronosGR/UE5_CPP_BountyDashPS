@@ -13,8 +13,8 @@ class UE5_CPP_BOUNTYDASHPS_API ABountyDashObject : public AActor
 	GENERATED_BODY()
 
 	float KillPoint;
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	ABountyDashObject();
 
@@ -29,10 +29,10 @@ public:
 
 protected:
 	UFUNCTION()
-	virtual void MyOnActorOverkap(AActor* otherActor);
+	virtual void MyOnActorOverlap(AActor* Actor, AActor* otherActor);
 
 	UFUNCTION()
-	virtual void MyOnActorEndOverlap(AActor* otherActor);
+	virtual void MyOnActorEndOverlap(AActor* Actor, AActor* otherActor);
 
 	UPROPERTY(EditAnywhere)
 	USphereComponent* Collider;
