@@ -8,7 +8,7 @@ public class UE5_CPP_BountyDashPS : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore" });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "PowerUpPlugin" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] { "DatasmithCore" });
 
