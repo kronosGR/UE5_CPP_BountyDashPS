@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "BountyDashPowerUp.h"
 #include "Coin.h"
 #include "Engine/TargetPoint.h"
 #include "GameFramework/Actor.h"
@@ -49,6 +50,12 @@ public:
 	UPROPERTY(EditAnywhere)
 	float MovementTimeInterval;
 
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<ABountyDashPowerUp> PowerUpObject;
+
+	UPROPERTY(EditAnywhere, meta = (ClampMin="0.0", ClampMax="100.0", UIMin="0.0", UIMax="100.0"))
+	int32 PowerUpChance;
+
 protected:
 	void SpawnCoin();
 	void SpawnCoinSet();
@@ -63,4 +70,6 @@ protected:
 	FTimerHandle CoinSetTimerHandle;
 	FTimerHandle CoinTimerHandle;
 	FTimerHandle SpawnMoveTimerHandle;
+
+	void SpawnPowerUp();
 };
