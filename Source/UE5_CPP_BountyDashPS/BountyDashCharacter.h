@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "PowerUpObject.h"
 #include "Camera/CameraComponent.h"
 #include "Engine/TargetPoint.h"
 #include "GameFramework/Character.h"
@@ -30,6 +31,7 @@ public:
 	UPROPERTY(EditAnywhere, Category = Sound)
 	UAudioComponent* dingSound;
 
+	void PowerUp(EPowerUp Type);
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

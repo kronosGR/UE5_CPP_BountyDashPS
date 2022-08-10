@@ -3,6 +3,9 @@
 
 #include "BountyDashPowerUp.h"
 
+#include "BountyDashCharacter.h"
+#include "Obstacle.h"
+
 ABountyDashPowerUp::ABountyDashPowerUp()
 {
 	PrimaryActorTick.bCanEverTick = true;
@@ -43,4 +46,25 @@ ABountyDashPowerUp::ABountyDashPowerUp()
 void ABountyDashPowerUp::MyOnActorOverlap(AActor* Actor, AActor* otherActor)
 {
 	Super::MyOnActorOverlap(Actor, otherActor);
+
+	if (otherActor->GetClass()->IsChildOf(AObstacle::StaticClass()))
+	{
+		USphereComponent* otherSphere = Cast<USphereComponent>(
+			otherActor->GetComponentByClass(UShapeComponent::StaticClass()));
+		if (otherSphere)
+		{
+			AddActorLocalOffset(FVector(
+				0.f, 0.f, (otherSphere->GetUnscaledSphereRadius()) + Collider->GetUnscaledSphereRadius() * 2));
+		}
+	}
+
+	if (otherActor->GetClass()->IsChildOf(ABountyDashCharacter::StaticClass()))
+	{
+		ABountyDashCharacter* thisChar = Cast<ABountyDashCharacter>(otherActor);
+		if (thisChar)
+		{
+			thisChar->PowerUp(PowerUp->GetType());
+			GetWorld()->DestroyActor(this);
+		}
+	}
 }
