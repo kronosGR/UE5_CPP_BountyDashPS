@@ -18,7 +18,7 @@ class UE5_CPP_BOUNTYDASHPS_API ABountyDashCharacter : public ACharacter
 public:
 	// Sets default values for this character's properties
 	ABountyDashCharacter();
-	
+
 	UPROPERTY(EditAnywhere, Category=Logic)
 	TArray<ATargetPoint*> TargetArray;
 
@@ -49,18 +49,20 @@ protected:
 	void MoveLeft();
 
 	UFUNCTION()
-	void MyOwnComponentOverlap(UPrimitiveComponent* OverlappedComp,  AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	void MyOwnComponentOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+	                           int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 	UFUNCTION()
-	void MyOwnComponentEndOverlap(UPrimitiveComponent* OverlappedComp,AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+	void MyOwnComponentEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
+	                              UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
 	UPROPERTY(EditAnywhere, Category=PowerUps)
 	float SmashTime;
 
-	
+
 	UPROPERTY(EditAnywhere, Category=PowerUps)
 	float MagnetTime;
-	
+
 	UPROPERTY(EditAnywhere, Category=PowerUps)
 	float MagnetReach;
 
@@ -68,8 +70,10 @@ protected:
 	void StopSmash();
 
 	UFUNCTION()
-	void StopMAgnet();
-public:	
+	void StopMagnet();
+
+	void CoinMagnet();
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 

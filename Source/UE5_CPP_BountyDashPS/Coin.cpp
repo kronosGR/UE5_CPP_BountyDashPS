@@ -25,7 +25,7 @@ void ACoin::MyOnActorOverlap(AActor* actor, AActor* otherActor)
 {
 	Super::MyOnActorOverlap(actor, otherActor);
 
-	if (otherActor->GetClass()->IsChildOf(AObstacle::StaticClass()))
+	if (otherActor->GetClass()->IsChildOf(AObstacle::StaticClass()) && !BeingPulled)
 	{
 		USphereComponent* thisSphere = Cast<USphereComponent>(GetComponentByClass(USphereComponent::StaticClass()));
 

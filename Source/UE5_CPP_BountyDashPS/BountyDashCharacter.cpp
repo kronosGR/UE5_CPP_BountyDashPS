@@ -3,6 +3,7 @@
 
 #include "BountyDashCharacter.h"
 
+#include "Coin.h"
 #include "EngineUtils.h"
 #include "Obstacle.h"
 #include "UE5_CPP_BountyDashPS.h"
@@ -60,6 +61,31 @@ ABountyDashCharacter::ABountyDashCharacter()
 
 void ABountyDashCharacter::PowerUp(EPowerUp Type)
 {
+	switch (Type)
+	{
+	case EPowerUp::SPEED:
+		{
+			GetCustomGameMode<AUE5_CPP_BountyDashPSGameModeBase>(GetWorld())->ReduceGameSpeed();
+			break;
+		}
+	case EPowerUp::SMASH:
+		{
+			CanSmash = true;
+			FTimerHandle newTimer;
+			GetWorld()->GetTimerManager().SetTimer(newTimer, this, &ABountyDashCharacter::StopSmash, SmashTime, false);
+			break;
+		}
+	case EPowerUp::MAGNET:
+		{
+			CanMagnet = true;
+			FTimerHandle newTimer;
+			GetWorld()->GetTimerManager().
+			            SetTimer(newTimer, this, &ABountyDashCharacter::StopMagnet, MagnetTime, false);
+			break;
+		}
+	default:
+		break;
+	}
 }
 
 // Called when the game starts or when spawned
@@ -135,6 +161,31 @@ void ABountyDashCharacter::MyOwnComponentEndOverlap(UPrimitiveComponent* Overlap
 	bBeingPushed = false;
 }
 
+void ABountyDashCharacter::StopSmash()
+{
+	CanSmash = false;
+}
+
+void ABountyDashCharacter::StopMagnet()
+{
+	CanMagnet = false;
+}
+
+void ABountyDashCharacter::CoinMagnet()
+{
+	for (TActorIterator<ACoin> coinIter(GetWorld()); coinIter; ++coinIter)
+	{
+		FVector between = GetActorLocation() - coinIter->GetActorLocation();
+		if (FMath::Abs(between.Size()) < MagnetReach)
+		{
+			FVector CoinPos = FMath::Lerp((*coinIter)->GetActorLocation(), GetActorLocation(), 0.2f);
+
+			(*coinIter)->SetActorLocation(CoinPos);
+			(*coinIter)->BeingPulled = true;
+		}
+	}
+}
+
 // Called every frame
 void ABountyDashCharacter::Tick(float DeltaTime)
 {
@@ -156,6 +207,11 @@ void ABountyDashCharacter::Tick(float DeltaTime)
 	{
 		float moveSpeed = GetCustomGameMode<AUE5_CPP_BountyDashPSGameModeBase>(GetWorld())->GetInvGameSpeed();
 		AddActorLocalOffset(FVector(moveSpeed, 0.f, 0.f));
+	}
+
+	if (CanMagnet)
+	{
+		CoinMagnet();
 	}
 }
 
