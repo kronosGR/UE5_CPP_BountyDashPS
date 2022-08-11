@@ -38,3 +38,12 @@ int32 AUE5_CPP_BountyDashPSGameModeBase::GetGameLevel()
 {
 	return gameLevel;
 }
+
+void AUE5_CPP_BountyDashPSGameModeBase::ReduceGameSpeed()
+{
+	if (gameSpeed > 10.f)
+	{
+		gameSpeed -= gameSpeedIncrease;
+		gameLevel--;
+	}
+}
