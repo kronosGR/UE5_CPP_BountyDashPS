@@ -53,6 +53,22 @@ protected:
 
 	UFUNCTION()
 	void MyOwnComponentEndOverlap(UPrimitiveComponent* OverlappedComp,AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
+	UPROPERTY(EditAnywhere, Category=PowerUps)
+	float SmashTime;
+
+	
+	UPROPERTY(EditAnywhere, Category=PowerUps)
+	float MagnetTime;
+	
+	UPROPERTY(EditAnywhere, Category=PowerUps)
+	float MagnetReach;
+
+	UFUNCTION()
+	void StopSmash();
+
+	UFUNCTION()
+	void StopMAgnet();
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -66,4 +82,6 @@ private:
 	short CurrentLocation;
 	FVector DesiredLocation;
 	bool bBeingPushed;
+	bool CanSmash;
+	bool CanMagnet;
 };
