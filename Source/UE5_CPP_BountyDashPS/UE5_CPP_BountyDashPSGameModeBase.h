@@ -40,6 +40,15 @@ public:
 	UFUNCTION()
 	virtual void Tick(float DeltaSeconds) override;
 
+	UFUNCTION()
+	bool GetGameOver();
+
+	UFUNCTION()
+	void GameOVer();
+	
+	UFUNCTION()
+	void SetGamePaused(bool gamePaused);
+
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	int32 numCoinsForSpeedIncrease;
@@ -49,5 +58,16 @@ protected:
 
 	UPROPERTY()
 	float RunTime;
-	
+
+	UPROPERTY()
+	bool bGameOver;
+
+	UPROPERTY()
+	bool startGameOverCount;
+
+	UPROPERTY()
+	float timeTillGameOver;
+
+	UPROPERTY()
+	float gameOverTimer;
 };
