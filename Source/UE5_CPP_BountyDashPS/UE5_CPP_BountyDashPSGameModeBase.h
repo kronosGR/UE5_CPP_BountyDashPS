@@ -44,7 +44,7 @@ public:
 	bool GetGameOver();
 
 	UFUNCTION()
-	void GameOVer();
+	void GameOver();
 	
 	UFUNCTION()
 	void SetGamePaused(bool gamePaused);

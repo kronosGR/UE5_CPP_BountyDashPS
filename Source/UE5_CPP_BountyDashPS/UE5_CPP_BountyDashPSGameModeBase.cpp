@@ -16,6 +16,12 @@ AUE5_CPP_BountyDashPSGameModeBase::AUE5_CPP_BountyDashPSGameModeBase()
 	gameLevel = 1;
 
 	HUDClass = ABountyDashHUD::StaticClass();
+
+	RunTime = 0.f;
+	bGameOver = false;
+	startGameOverCount = false;
+	timeTillGameOver = 2.f;
+	gameOverTimer = 0.f;
 }
 
 void AUE5_CPP_BountyDashPSGameModeBase::CharScoreUp(unsigned int charScore)
@@ -60,5 +66,36 @@ void AUE5_CPP_BountyDashPSGameModeBase::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	RunTime += DeltaSeconds;
+	if (!startGameOverCount)
+	{
+		RunTime += DeltaSeconds;
+	}
+	else
+	{
+		gameOverTimer += DeltaSeconds;
+		if (gameOverTimer >= timeTillGameOver)
+		{
+			bGameOver = true;
+		}
+	}
+}
+
+bool AUE5_CPP_BountyDashPSGameModeBase::GetGameOver()
+{
+	return bGameOver;
+}
+
+void AUE5_CPP_BountyDashPSGameModeBase::GameOver()
+{
+	startGameOverCount = true;
+}
+
+void AUE5_CPP_BountyDashPSGameModeBase::SetGamePaused(bool gamePaused)
+{
+	APlayerController* myPlayer = GetWorld()->GetFirstPlayerController();
+
+	if (myPlayer != nullptr)
+	{
+		myPlayer->SetPause(gamePaused);
+	}
 }
