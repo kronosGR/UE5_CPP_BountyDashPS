@@ -11,6 +11,7 @@
 UCLASS()
 class UE5_CPP_BOUNTYDASHPS_API ABountyDashHUD : public AHUD
 {
+public:
 	GENERATED_BODY()
 	ABountyDashHUD();
 
@@ -18,4 +19,5 @@ class UE5_CPP_BOUNTYDASHPS_API ABountyDashHUD : public AHUD
 	UFont* HUDFont;
 
 	virtual void DrawHUD() override;
+
 };

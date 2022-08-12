@@ -81,6 +81,7 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	void ScoreUp();
+	int GetScore();
 
 private:
 	short CurrentLocation;

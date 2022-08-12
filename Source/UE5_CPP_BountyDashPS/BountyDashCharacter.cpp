@@ -233,3 +233,8 @@ void ABountyDashCharacter::ScoreUp()
 	Score++;
 	GetCustomGameMode<AUE5_CPP_BountyDashPSGameModeBase>(GetWorld())->CharScoreUp(Score);
 }
+
+int ABountyDashCharacter::GetScore()
+{
+	return Score;
+}

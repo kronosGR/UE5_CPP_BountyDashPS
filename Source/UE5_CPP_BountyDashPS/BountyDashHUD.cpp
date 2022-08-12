@@ -3,10 +3,15 @@
 
 #include "BountyDashHUD.h"
 
-BountyDashHUD::BountyDashHUD()
+
+ABountyDashHUD::ABountyDashHUD()
 {
+	static ConstructorHelpers::FObjectFinder<UFont> OurHudFont(TEXT("/Game/BountyDashFont.BountyDashFont"));
+	HUDFont = OurHudFont.Object;
 }
 
-BountyDashHUD::~BountyDashHUD()
+void ABountyDashHUD::DrawHUD()
 {
+	Super::DrawHUD();
 }
+
