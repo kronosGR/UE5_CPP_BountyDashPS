@@ -27,6 +27,17 @@ void ABountyDashHUD::DrawHUD()
 	AUE5_CPP_BountyDashPSGameModeBase* DashGameMode = GetCustomGameMode<AUE5_CPP_BountyDashPSGameModeBase>(GetWorld());
 
 	FString HUDString = FString::Printf(TEXT("Score: %d Runtime: %.4f"), DashCharacter->GetScore(),
-										DashGameMode->GetRunTime());
+	                                    DashGameMode->GetRunTime());
 	DrawText(HUDString, FColor::Yellow, 50, 50, HUDFont);
+
+	if (DashGameMode->GetGameOver())
+	{
+		float X;
+		float Y;
+		GetTextSize(TEXT("GAME OVER!!! Press R to Restart!"), X, Y, HUDFont);
+		DrawText(TEXT("GAME OVER!!! Press R to Restart!"), FColor::Yellow, (ScreenDimensions.X - X) / 2.0f,
+		         (ScreenDimensions.Y - Y) / 2.0f, HUDFont);
+
+		DashGameMode->SetGamePaused(true);
+	}
 }
