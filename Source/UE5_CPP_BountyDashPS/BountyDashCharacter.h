@@ -73,6 +73,11 @@ protected:
 	void StopMagnet();
 
 	void CoinMagnet();
+
+	UFUNCTION()
+	virtual void Reset() override;
+
+	float KillPoint;
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
